@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import * as auth from './models/auth';
 
 @Controller('auth')
@@ -6,7 +6,7 @@ export class AuthController {
     @Post('login')
     async login(@Body() request: auth.LoginReq) {
         if(!request.login_id || !request.password) {
-            return
+            throw new BadRequestException('Login ID and password are required');
         }
 
         const url = 'http://localhost:8000/user/login'
