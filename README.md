@@ -23,7 +23,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Gateway API built with [Nest](https://github.com/nestjs/nest) framework TypeScript.
 
 ## Project setup
 
