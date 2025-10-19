@@ -8,7 +8,12 @@ phases:
       - AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
       - aws ecr get-login-password --region ${ECR_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$ECR_REGION.amazonaws.com
       - IMAGE_URL="${AWS_ACCOUNT_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com/${ECR_REPO_NAME}"
-      - IMAGE_TAG="$(echo ${CODEBUILD_RESOLVED_SOURCE_VERSION} | cut -c 1-8)"
+      - |
+        if [ -z "$CODEBUILD_RESOLVED_SOURCE_VERSION" ]; then
+          IMAGE_TAG=$(head /dev/urandom | tr -dc a-z0-9 | head -c 8)
+        else
+          IMAGE_TAG="$(echo ${CODEBUILD_RESOLVED_SOURCE_VERSION} | cut -c 1-8)"
+        fi
       - export DOCKER_URL="${IMAGE_URL}:${IMAGE_TAG}"
   build:
     commands:
