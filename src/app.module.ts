@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { HealthCheckModule } from './health-check/health-check.module';
-import { GatewayMiddleware } from './middleware/ratelimit.middieware';
+import { GatewayMiddleware } from './middleware/gateway.middieware';
 
 @Module({
   imports: [HealthCheckModule],
