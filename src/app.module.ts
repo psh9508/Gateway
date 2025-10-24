@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthController } from './auth/auth.controller';
 import { HealthCheckModule } from './health-check/health-check.module';
-import { RatelimitMiddleware } from './middleware/ratelimit.middieware';
+import { GatewayMiddleware } from './middleware/ratelimit.middieware';
 
 @Module({
   imports: [HealthCheckModule],
@@ -11,7 +11,7 @@ import { RatelimitMiddleware } from './middleware/ratelimit.middieware';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(RatelimitMiddleware)
+      .apply(GatewayMiddleware)
       .forRoutes('*');
   }
 }
