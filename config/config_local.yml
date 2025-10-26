@@ -1,0 +1,4 @@
+server_name: gateway
+
+server_endpoints:
+  auth: localhost:8000

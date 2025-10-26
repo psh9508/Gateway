@@ -1,5 +1,6 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import * as auth from './models/auth';
+import { config } from '../../config/config.loader';
 
 @Controller('auth')
 export class AuthController {
@@ -9,7 +10,8 @@ export class AuthController {
       throw new BadRequestException('Login ID and password are required');
     }
 
-    const url = 'http://localhost:8000/user/login';
+    const authEndpoint = config.get('server_endpoints').auth;
+    const url = `http://${authEndpoint}/user/login`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
