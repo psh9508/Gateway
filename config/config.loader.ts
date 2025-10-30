@@ -33,6 +33,8 @@ export class ConfigLoader {
       throw new Error('ENV environment variable is required but not set');
     }
 
+    console.debug(`ENV = ${env}`)
+
     const configPath = path.join(process.cwd(), 'config', `config_${env}.yml`);
 
     if (!fs.existsSync(configPath)) {
@@ -42,13 +44,13 @@ export class ConfigLoader {
     try {
       let fileContents = fs.readFileSync(configPath, 'utf8');
       
-      // Replace environment variables in the format ${ENV_}
-      fileContents = fileContents.replace(/\$\{(ENV_\w+)\}/g, (match, envVar) => {
+      // Replace environment variables in the format ${ENV_} (excluding commented lines)
+      fileContents = fileContents.replace(/^(?!#).*\$\{(ENV_\w+)\}/gm, (match, envVar) => {
         const value = process.env[envVar];
         if (value === undefined) {
           throw new Error(`Environment variable ${envVar} is not defined`);
         }
-        return value;
+        return match.replace(`\${${envVar}}`, value);
       });
       
       this.config = yaml.load(fileContents) as ConfigInterface;
