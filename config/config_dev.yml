@@ -1,0 +1,10 @@
+server_name: gateway
+
+server_endpoints:
+  auth: authserver.mimir:8000
+
+# message_bus:
+#   host: message_bus.mimir
+#   user_name: user
+#   password: ${ENV_RABBITMQ_PASSWORD}
+#   vhost: my_vhost
