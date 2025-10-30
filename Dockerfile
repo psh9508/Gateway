@@ -10,8 +10,9 @@ COPY tsconfig*.json ./
 # Install all dependencies
 RUN npm ci
 
-# Copy source code
+# Copy source code and config
 COPY src ./src
+COPY config ./config
 
 # Build the application
 RUN npm run build
