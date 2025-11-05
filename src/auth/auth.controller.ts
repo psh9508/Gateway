@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, HttpException, HttpStatus } from '@nestjs/common';
 import * as auth from './models/auth';
 import { config } from '../../config/config.loader';
 
@@ -34,7 +34,11 @@ export class AuthController {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new HttpException(
+        errorData || `Authentication failed`,
+        response.status
+      );
     }
 
     const responseData = await response.json();
