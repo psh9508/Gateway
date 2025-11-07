@@ -1,4 +1,11 @@
-import { BadRequestException, Body, Controller, Get, Post, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  HttpException,
+} from '@nestjs/common';
 import * as auth from './models/auth';
 import { config } from '../../config/config.loader';
 
@@ -13,15 +20,15 @@ export class AuthController {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
 
-    return response.ok
+    return response.ok;
   }
 
   @Post('login')
   async login(@Body() request: auth.LoginReq) {
-    if(!request.login_id || !request.password) {
+    if (!request.login_id || !request.password) {
       throw new BadRequestException('Login ID and password are required');
     }
     const url = `http://${this.authEndpoint}/user/login`;
@@ -37,7 +44,7 @@ export class AuthController {
       const errorData = await response.json().catch(() => ({}));
       throw new HttpException(
         errorData || `Authentication failed`,
-        response.status
+        response.status,
       );
     }
 

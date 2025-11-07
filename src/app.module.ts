@@ -10,8 +10,6 @@ import { GatewayMiddleware } from './middleware/gateway.middieware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(GatewayMiddleware)
-      .forRoutes('*');
+    consumer.apply(GatewayMiddleware).forRoutes('*');
   }
 }
