@@ -51,4 +51,37 @@ export class AuthController {
     const responseData = await response.json();
     return responseData;
   }
+
+  @Post('user_verification')
+  async verifyEmail(@Body() request: auth.EmailVerificationReq) {
+    if (
+      !request.user_id ||
+      !request.login_id ||
+      !request.verification_code
+    ) {
+      throw new BadRequestException(
+        'User ID, Login ID, and verification code are required',
+      );
+    }
+
+    const url = `http://${this.authEndpoint}/user/user_verification`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new HttpException(
+        errorData || `Email verification failed`,
+        response.status,
+      );
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  }
 }
